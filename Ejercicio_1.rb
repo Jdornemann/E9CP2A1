@@ -1,47 +1,35 @@
 class Table
-
+    attr_accessor :mesa
+    attr_accessor :monto
     def initialize(mesa,*monto)
-     
-         @mesa = mesa
-        # @redone = redone
-        # @redtwo= redtwo
-        # @redthree= redthree
-        # @redfour= redfour
-
-        @monto = monto
-       
+      @mesa = mesa
+      @monto = monto
     end
 
-     def maxdailyincome
-     # Conocer el mayor valor recaudado, por mesa, y el nombre de la mesa y día corresponde (día 1, día 2, día 3 o día 4).
-       count = 0
-       #@row = { one: @redone , two: @redtwo , trhee: @redthree, four:@redfour}
-       row =  @monto
-       #max = row.values.max 
-       #whatkey = @ow.key(max)
+    def maxdaily_income
+       max_value = @monto.group_by { |x| x[0] }.max.last 
+       index_day = @monto.index(@monto.compact.max) + 1
+       max_value_i = max_value.join.to_i
 
-       print row
-      
-
-      # puts @mesa + ": " + max.to_s + " in day: " +whatkey.to_s
-     end
+       "Máxima recaudación en " + @mesa + " : " + max_value_i.to_s + " en día " + index_day.to_s
+    end
 
 end
 
-def readfileCasino
+def readfile_casino
 
     lines=[]
 
     File.open('casino.txt','r'){ |file| lines = file.readlines}
 
     lines.each do |line|
-        ls = line.split(', ')
+    ls = line.split(', ')
 
-      objtable = Table.new(*ls)
-      
-      max = objtable.maxdailyincome
-      puts max
+    objtable = Table.new(*ls)
+    puts objtable.maxdaily_income
+ 
+    
     end
 end
 
-readfileCasino
+readfile_casino
